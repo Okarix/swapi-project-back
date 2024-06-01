@@ -1,21 +1,25 @@
 import express from 'express';
 import cors from 'cors';
-import axios from 'axios';
+import 'dotenv/config';
+
+import mongoose from 'mongoose';
+import { getPeoples } from './controllers/PeopleController.js';
+
+mongoose
+	.connect(process.env.MONGODB_URI)
+	.then(() => console.log('DB OK'))
+	.catch(err => console.log('DB error', err));
 
 const app = express();
 
 app.use(express.json());
 app.use(cors());
 
-app.get('/people', async (req, res) => {
-	try {
-		const response = await axios.get('https://swapi.dev/api/people/?page=1');
-		res.json(response.data);
-	} catch (err) {
-		console.error(err);
-		res.status(500).send('Error calling external API');
-	}
+app.get('/', (req, res) => {
+	res.send('SWAPI PROJECT');
 });
+
+app.get('/peoples', getPeoples);
 
 app.listen(4444, err => {
 	if (err) {
