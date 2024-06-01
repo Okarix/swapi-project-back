@@ -3,7 +3,8 @@ import axios from 'axios';
 
 export const getStarships = async (req, res) => {
 	try {
-		const pageNumber = req.query.pageNumber || 1;
+		const pageNumber = parseInt(req.query.pageNumber) || 1;
+		const pageSize = parseInt(req.query.pageSize) || 10;
 
 		const response = await axios.get(`https://swapi.dev/api/starships/?page=${pageNumber}`);
 		const data = response.data.results;
@@ -19,7 +20,8 @@ export const getStarships = async (req, res) => {
 			}
 		}
 
-		const starships = await Starship.find();
+		const skip = (pageNumber - 1) * pageSize;
+		const starships = await Starship.find().skip(skip).limit(pageSize);
 		res.json(starships);
 	} catch (err) {
 		console.error(err);

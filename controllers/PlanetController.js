@@ -3,7 +3,8 @@ import axios from 'axios';
 
 export const getPlanets = async (req, res) => {
 	try {
-		const pageNumber = req.query.pageNumber || 1;
+		const pageNumber = parseInt(req.query.pageNumber) || 1;
+		const pageSize = parseInt(req.query.pageSize) || 10;
 
 		const response = await axios.get(`https://swapi.dev/api/planets/?page=${pageNumber}`);
 		const data = response.data.results;
@@ -19,7 +20,8 @@ export const getPlanets = async (req, res) => {
 			}
 		}
 
-		const planets = await Planet.find();
+		const skip = (pageNumber - 1) * pageSize;
+		const planets = await Planet.find().skip(skip).limit(pageSize);
 		res.json(planets);
 	} catch (err) {
 		console.error(err);

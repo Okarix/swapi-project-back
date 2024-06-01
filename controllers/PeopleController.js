@@ -3,7 +3,8 @@ import axios from 'axios';
 
 export const getPeoples = async (req, res) => {
 	try {
-		const pageNumber = req.query.pageNumber || 1;
+		const pageNumber = parseInt(req.query.pageNumber) || 1;
+		const pageSize = parseInt(req.query.pageSize) || 10;
 
 		const response = await axios.get(`https://swapi.dev/api/people/?page=${pageNumber}`);
 		const data = response.data.results;
@@ -19,7 +20,8 @@ export const getPeoples = async (req, res) => {
 			}
 		}
 
-		const peoples = await People.find();
+		const skip = (pageNumber - 1) * pageSize;
+		const peoples = await People.find().skip(skip).limit(pageSize);
 		res.json(peoples);
 	} catch (err) {
 		console.error(err);
