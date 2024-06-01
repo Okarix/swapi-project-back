@@ -26,3 +26,22 @@ export const getPlanets = async (req, res) => {
 		res.status(500).send('Error calling external API or saving data');
 	}
 };
+
+export const getPlanetByName = async (req, res) => {
+	try {
+		const name = req.query.name;
+		if (!name) {
+			return res.status(400).send('Name query parameter is required');
+		}
+
+		const planet = await Planet.find({ name: { $regex: name, $options: 'i' } });
+		if (planet.length === 0) {
+			return res.status(404).send('No planet found with the given name');
+		}
+
+		res.json(planet);
+	} catch (err) {
+		console.error(err);
+		res.status(500).send('Error searching for planet by name');
+	}
+};

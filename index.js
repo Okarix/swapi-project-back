@@ -2,9 +2,9 @@ import express from 'express';
 import cors from 'cors';
 import 'dotenv/config';
 import mongoose from 'mongoose';
-import { getPeoples } from './controllers/PeopleController.js';
-import { getPlanets } from './controllers/PlanetController.js';
-import { getStarships } from './controllers/StarshipController.js';
+import { getPeopleByName, getPeoples } from './controllers/PeopleController.js';
+import { getPlanetByName, getPlanets } from './controllers/PlanetController.js';
+import { getStarshipByName, getStarships } from './controllers/StarshipController.js';
 
 mongoose
 	.connect(process.env.MONGODB_URI)
@@ -21,8 +21,11 @@ app.get('/', (req, res) => {
 });
 
 app.get('/peoples', getPeoples);
+app.get('/peoples/search', getPeopleByName);
 app.get('/planets', getPlanets);
+app.get('/planets/search', getPlanetByName);
 app.get('/starships', getStarships);
+app.get('/starships/search', getStarshipByName);
 
 app.listen(4444, err => {
 	if (err) {

@@ -26,3 +26,22 @@ export const getPeoples = async (req, res) => {
 		res.status(500).send('Error calling external API or saving data');
 	}
 };
+
+export const getPeopleByName = async (req, res) => {
+	try {
+		const name = req.query.name;
+		if (!name) {
+			return res.status(400).send('Name query parameter is required');
+		}
+
+		const people = await People.find({ name: { $regex: name, $options: 'i' } });
+		if (people.length === 0) {
+			return res.status(404).send('No people found with the given name');
+		}
+
+		res.json(people);
+	} catch (err) {
+		console.error(err);
+		res.status(500).send('Error searching for people by name');
+	}
+};

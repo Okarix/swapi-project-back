@@ -26,3 +26,22 @@ export const getStarships = async (req, res) => {
 		res.status(500).send('Error calling external API or saving data');
 	}
 };
+
+export const getStarshipByName = async (req, res) => {
+	try {
+		const name = req.query.name;
+		if (!name) {
+			return res.status(400).send('Name query parameter is required');
+		}
+
+		const starship = await Starship.find({ name: { $regex: name, $options: 'i' } });
+		if (starship.length === 0) {
+			return res.status(404).send('No starship found with the given name');
+		}
+
+		res.json(starship);
+	} catch (err) {
+		console.error(err);
+		res.status(500).send('Error searching for starship by name');
+	}
+};
