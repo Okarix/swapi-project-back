@@ -10,7 +10,6 @@ const peopleSchema = new mongoose.Schema({
 	birth_year: String,
 	gender: String,
 	homeworld: String,
-	starships: [String],
 });
 
 export default mongoose.model('People', peopleSchema);

@@ -1,9 +1,9 @@
 import express from 'express';
 import cors from 'cors';
 import 'dotenv/config';
-
 import mongoose from 'mongoose';
 import { getPeoples } from './controllers/PeopleController.js';
+import { getPlanets } from './controllers/PlanetController.js';
 
 mongoose
 	.connect(process.env.MONGODB_URI)
@@ -20,6 +20,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/peoples', getPeoples);
+app.get('/planets', getPlanets);
 
 app.listen(4444, err => {
 	if (err) {
