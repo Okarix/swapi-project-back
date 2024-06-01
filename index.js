@@ -7,7 +7,7 @@ import { getPlanetByName, getPlanets } from './controllers/PlanetController.js';
 import { getStarshipByName, getStarships } from './controllers/StarshipController.js';
 
 mongoose
-	.connect(process.env.MONGODB_URI)
+	.connect(process.env.MONGODB_URI || 'mongodb+srv://admin:adiar2003@cluster0.xn2zx35.mongodb.net/starwars?retryWrites=true&w=majority&appName=Cluster0')
 	.then(() => console.log('DB OK'))
 	.catch(err => console.log('DB error', err));
 
